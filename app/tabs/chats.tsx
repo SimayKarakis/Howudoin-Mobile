@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import {Text, TextInput, StyleSheet, Pressable, TouchableHighlight, View, ScrollView, Alert, TouchableOpacity} from "react-native";
+import {Text, StyleSheet, View, ScrollView, Alert, TouchableOpacity} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from '@expo/vector-icons/Feather';
 import {Link, useRouter} from "expo-router";
+import Config from '../Config';
 
 export default function Chats() 
 {
   const router = useRouter();
-  const [friends, setFriendsList] = useState<string[]>([]);;
+  const [friends, setFriendsList] = useState<string[]>([]);
 
   const fetchFriends = async (token: string) => {
     try {
-      const response = await fetch("http://${Config.IP_ADDRESS}:8080/friends", {
+      const response = await fetch(`http://172.28.96.1:8080/friends`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +41,7 @@ export default function Chats()
           fetchFriends(token); // Use the token to fetch friends
         } else {
           Alert.alert("Error", "Token not found. Please log in.");
-          router.push("/login"); // Redirect to login if token is not found
+          router.push("./login"); // Redirect to login if token is not found
         }
       } catch (error) {
         console.error("Error retrieving token:", error);
@@ -69,10 +70,9 @@ export default function Chats()
                 <Text style={appStyle.friendName}>{friend}</Text>
                 <View style={appStyle.arrowContainer}>
                   <TouchableOpacity onPress={() => {
-                    router.push({
-                      pathname: "/oneChat", 
-                      params: {friendName: friend}
-                    })}}>
+                    console.log(friend);
+                    router.push(`../oneChat?userName=${friend}`)
+                    }}>
                     <Feather name="arrow-right" size={20} color="#1D3557" />
                   </TouchableOpacity>
                 </View>
@@ -84,7 +84,7 @@ export default function Chats()
           <Text>No friends available</Text>
         )}
         <View>
-          <Link href = "/oneChat" style={appStyle.links}>oneChat</Link>
+          <Link href = "./oneChat" style={appStyle.links}>oneChat</Link>
         </View>
       </ScrollView>
     </View>

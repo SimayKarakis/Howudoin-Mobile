@@ -1,14 +1,8 @@
 import { useState } from "react";
-import {
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Alert,
-} from "react-native";
+import {Text, TextInput, StyleSheet, TouchableOpacity, View, Alert,} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import Config from './Config';
 
 export default function SendFriendRequest() {
   const [email, setEmail] = useState("");
@@ -24,7 +18,7 @@ export default function SendFriendRequest() {
       const token = await AsyncStorage.getItem("@auth_token");
       if (!token) {
         Alert.alert("Error", "Authentication token not found. Please log in.");
-        router.push("/login");
+        router.push("./login");
         return;
       }
 
@@ -38,8 +32,7 @@ export default function SendFriendRequest() {
       };
 
       const response = await fetch(
-        "http://172.28.96.1:8080/friends/add",
-        requestOption
+        `http://${Config.IP_ADDRESS}:8080/friends/add`, requestOption
       );
 
       if (response.ok) {

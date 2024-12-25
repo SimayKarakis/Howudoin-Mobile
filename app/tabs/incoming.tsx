@@ -3,6 +3,7 @@ import {Text, TextInput, Image, StyleSheet, Pressable, View, ScrollView, Alert, 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from '@expo/vector-icons/Feather';
 import {useRouter} from "expo-router";
+import Config from '../Config';
 
 export default function Incoming()
 {
@@ -19,7 +20,7 @@ export default function Incoming()
         }
 
         const response = await fetch(
-          "http://172.28.96.1:8080/friends/incoming",
+          `http://${Config.IP_ADDRESS}:8080/friends/incoming`,
           {
             method: "GET",
             headers: {
@@ -54,7 +55,7 @@ export default function Incoming()
         }
 
         const response = await fetch(
-          "http://172.28.96.1:8080/friends/accept",
+          `http://172.28.96.1:8080/friends/accept`,
           {
             method: "POST",
             headers: {
@@ -70,7 +71,7 @@ export default function Incoming()
           setIncomingRequests((prevRequests) =>
             prevRequests.filter((request) => request !== receivedUserName)
           );
-          router.push("/tabs/chats");
+          router.push("../tabs/chats");
 
         } else {
           Alert.alert("Error accepting friend request");

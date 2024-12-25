@@ -1,6 +1,7 @@
 import {Text, TextInput, Image, StyleSheet, TouchableOpacity, View , Alert} from "react-native";
 import {useState} from "react";
 import {Link, useRouter} from "expo-router";
+import Config from './Config';
 
 export default function Index() 
 {
@@ -32,7 +33,7 @@ export default function Index()
       )
     }
 
-    fetch("http://172.28.96.1:8080/register", requestOptions)
+    fetch(`http://${Config.IP_ADDRESS}:8080/register`, requestOptions)
       .then((response) => response.text())
       .then((result) => afterResponse(result))
       .catch((error) => console.error(error))

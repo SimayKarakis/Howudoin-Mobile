@@ -2,6 +2,7 @@ import {Text, TextInput, Image, StyleSheet, TouchableOpacity, View, Alert} from 
 import {useState} from "react";
 import {Link, useRouter} from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Config from './Config';
 
 
 export default function Login() 
@@ -29,7 +30,7 @@ export default function Login()
       ),
     }
 
-    fetch("http://172.28.96.1:8080/login", requestOption)
+    fetch(`http://172.28.96.1:8080/login`, requestOption)
       .then((response) => {
         if (response.ok) {
           return response.json();
