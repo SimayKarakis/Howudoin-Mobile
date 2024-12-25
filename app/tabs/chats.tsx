@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Text, TextInput, StyleSheet, Pressable, TouchableHighlight, View, ScrollView, Alert} from "react-native";
+import {Text, TextInput, StyleSheet, Pressable, TouchableHighlight, View, ScrollView, Alert, TouchableOpacity} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from '@expo/vector-icons/Feather';
 import {Link, useRouter} from "expo-router";
@@ -11,7 +11,7 @@ export default function Chats()
 
   const fetchFriends = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:8080/friends", {
+      const response = await fetch("http://${Config.IP_ADDRESS}:8080/friends", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -55,39 +55,26 @@ export default function Chats()
     <View style = {appStyle.screen}>
       <View style={appStyle.headerForTabs}>
         <Text style={appStyle.leftText}>Chats</Text>
-        <Pressable onPress = {() => {router.push("/sendFriendRequest")}}>
+        <TouchableOpacity onPress = {() => {router.push("/sendFriendRequest")}}>
           <Feather name="user-plus" size={22} color="black" />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style = {appStyle.lines}></View>
 
       <ScrollView contentContainerStyle={appStyle.scrollContent}>
-        // just to see DELETE AFTER SUCCEEDING!!!
-        <View>
-          <View style={appStyle.friendItem}>
-            <Text style={appStyle.friendName}>Simay Karakış</Text>
-            <View style={appStyle.arrowContainer}>
-              <TouchableHighlight onPress={() => {router.push("/oneChat")}}>
-                <Feather name="arrow-right" size={16} color="#1D3557"/>
-              </TouchableHighlight>
-            </View>
-          </View>
-          <View style = {appStyle.lines}></View>
-        </View>
-
         {friends.length > 0 ? (
           friends.map((friend, index) => (
             <View>
               <View key={index} style={appStyle.friendItem}>
                 <Text style={appStyle.friendName}>{friend}</Text>
                 <View style={appStyle.arrowContainer}>
-                  <Pressable onPress={() => {
+                  <TouchableOpacity onPress={() => {
                     router.push({
                       pathname: "/oneChat", 
                       params: {friendName: friend}
                     })}}>
-                    <Feather name="arrow-right" size={28} color="#1D3557" />
-                  </Pressable>
+                    <Feather name="arrow-right" size={20} color="#1D3557" />
+                  </TouchableOpacity>
                 </View>
               </View>
               <View style = {appStyle.lines}></View>

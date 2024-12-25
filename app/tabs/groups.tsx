@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
-import {Text, TextInput, Image, StyleSheet, Pressable, View, ScrollView, Alert} from "react-native";
+import {Text, TextInput, StyleSheet, Pressable, TouchableHighlight, View, ScrollView, Alert, TouchableOpacity} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from '@expo/vector-icons/Feather';
 import {Link, useRouter} from "expo-router";
 
-export default function Groups()
+export default function Groups() 
 {
-    return (
-        <View style = {appStyle.screen}>
+  return (
+    <View style = {appStyle.screen}>
 
-            <View><View style={appStyle.lines}/></View>
-
-            
-        </View>
-        )
+    </View>
+  )
 }
 const appStyle = StyleSheet.create({
   
@@ -101,17 +98,13 @@ const appStyle = StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'center',
       borderBottomWidth: 1,
-      borderBottomColor: "#E96A70"
+      borderBottomColor: "#E96A70",
     },
 
     leftText: {
       marginLeft: 10,
-      fontSize: 24,
+      fontSize: 22,
       color: '#457B9D',
-    },
-
-    plusIcon: {
-      marginRight: 10,
     },
 
     oneChat:{
@@ -123,6 +116,8 @@ const appStyle = StyleSheet.create({
     },
 
     friendItem: {
+      width: "100%",
+      height: 70,
       flexDirection: 'row',
       paddingHorizontal: 10,
       justifyContent: 'space-between',
@@ -132,19 +127,19 @@ const appStyle = StyleSheet.create({
     },
 
     arrowContainer: {
-      width: 32,
-      height: 24,
+      padding: 5,
       backgroundColor: "#A8DADC",
       borderWidth: 1,
       borderColor: "#457B9D",
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 10,
+      borderRadius: 7.5,
     },
 
     friendName: {
-      fontSize: 16,
-      color: "#000000",
+      marginLeft: 10,
+      fontSize: 24,
+      color: '#457B9D',
       flex: 1,
     },
 });

@@ -1,4 +1,4 @@
-import {Text, TextInput, Image, StyleSheet, Pressable, View , Alert} from "react-native";
+import {Text, TextInput, Image, StyleSheet, TouchableOpacity, View , Alert} from "react-native";
 import {useState} from "react";
 import {Link, useRouter} from "expo-router";
 
@@ -6,23 +6,16 @@ export default function Index()
 {
   const router = useRouter();
   
-  const [userName, setName] = useState("");
-  const [userLastName, setLastName] = useState("");
-  const [userEmail, setEmail] = useState("");
-  const [userPassword, setPassword] = useState("");
-
-  interface RegisterResponse {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
   function submit()
   {
-    function afterResponse(result: RegisterResponse)
+    function afterResponse(result: string)
     {
-      Alert.alert("User " + result.name + " is registered!")
+      Alert.alert("User is registered!")
       router.push("./login");
     }
 
@@ -39,8 +32,8 @@ export default function Index()
       )
     }
 
-    fetch("http://localhost:8080/register", requestOptions)
-      .then((response) => response.json() as Promise<RegisterResponse>)
+    fetch("http://172.28.96.1:8080/register", requestOptions)
+      .then((response) => response.text())
       .then((result) => afterResponse(result))
       .catch((error) => console.error(error))
 
@@ -52,33 +45,35 @@ export default function Index()
       <Image source={require('../assets/images/logo.png')} style = {appStyle.images}/>
       
       <TextInput 
-        onChangeText={(a)=>setName(a)} 
+        onChangeText={(a)=>setUserName(a)} 
         style = {appStyle.textBoxes} 
         placeholder="name">
       </TextInput>
 
       <TextInput 
-        onChangeText={(a)=>setLastName(a)} 
+        onChangeText={(a)=>setUserLastName(a)} 
         style = {appStyle.textBoxes} 
         placeholder="last name">  
       </TextInput>
 
       <TextInput 
-        onChangeText={(a)=>setEmail(a)} 
+        onChangeText={(a)=>setUserEmail(a)} 
         style = {appStyle.textBoxes} 
-        placeholder="email">
+        placeholder="email"
+        keyboardType="email-address"
+        autoCapitalize="none">
       </TextInput>
 
       <TextInput 
-        onChangeText={(a)=>setPassword(a)} 
+        onChangeText={(a)=>setUserPassword(a)} 
         style = {appStyle.textBoxes} 
         placeholder="password">
       </TextInput>
 
       <View style={appStyle.buttons}>
-        <Pressable onPress={submit}>
+        <TouchableOpacity onPress={submit}>
             <Text>REGISTER</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <Text style={appStyle.texts}>

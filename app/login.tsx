@@ -1,4 +1,4 @@
-import {Text, TextInput, Image, StyleSheet, Pressable, View, Alert} from "react-native";
+import {Text, TextInput, Image, StyleSheet, TouchableOpacity, View, Alert} from "react-native";
 import {useState} from "react";
 import {Link, useRouter} from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,8 +7,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function Login() 
 {
   const router = useRouter();
-  const [userEmail, setEmail] = useState("");
-  const [userPassword, setPassword] = useState("");
+
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
   function submit()
   {
@@ -28,7 +29,7 @@ export default function Login()
       ),
     }
 
-    fetch("http://localhost:8080/login", requestOption)
+    fetch("http://172.28.96.1:8080/login", requestOption)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -42,7 +43,7 @@ export default function Login()
         AsyncStorage.setItem("@auth_token", token)
           .then(() => {
             Alert.alert("Success", "Logged in successfully!");
-            router.push("./logged_in/chats");
+            router.push("./tabs/chats");
           })
           .catch((error) => {
             console.error("Error saving token:", error);
@@ -59,21 +60,23 @@ export default function Login()
       <Image source={require('../assets/images/logo.png')} style = {appStyle.images}/>
 
       <TextInput 
-          onChangeText={(a)=>setEmail(a)} 
+          onChangeText={(a)=>setUserEmail(a)} 
           style = {appStyle.textBoxes} 
-          placeholder="email">
+          placeholder="email"
+          keyboardType="email-address"
+          autoCapitalize="none">
       </TextInput>
 
       <TextInput 
-          onChangeText={(a)=>setPassword(a)} 
+          onChangeText={(a)=>setUserPassword(a)} 
           style = {appStyle.textBoxes} 
           placeholder="password">
       </TextInput>
 
       <View style={appStyle.buttons}>
-          <Pressable onPress={submit}>
+          <TouchableOpacity onPress={submit}>
               <Text>LOGIN</Text>
-          </Pressable>
+          </TouchableOpacity>
       </View>
 
       <Text style={appStyle.texts}>Don't you have an account?{" "}

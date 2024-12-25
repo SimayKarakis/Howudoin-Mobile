@@ -1,6 +1,6 @@
 import { View, StyleSheet} from "react-native";
 
-export default function oneChat() {
+export default function GroupDetails() {
     return(
         <View style = {appStyle.screen}>
 
