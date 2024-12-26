@@ -12,7 +12,7 @@ export default function Chats()
 
   const fetchFriends = async (token: string) => {
     try {
-      const response = await fetch(`http://172.28.96.1:8080/friends`, {
+      const response = await fetch(`http://192.168.1.6:8080/friends`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export default function Chats()
                 <Text style={appStyle.friendName}>{friend}</Text>
                 <View style={appStyle.arrowContainer}>
                   <TouchableOpacity onPress={() => {
-                    console.log(friend);
+                    //console.log(friend);
                     router.push(`../oneChat?userName=${friend}`)
                     }}>
                     <Feather name="arrow-right" size={20} color="#1D3557" />
@@ -83,9 +83,7 @@ export default function Chats()
         ) : (
           <Text>No friends available</Text>
         )}
-        <View>
-          <Link href = "./oneChat" style={appStyle.links}>oneChat</Link>
-        </View>
+        
       </ScrollView>
     </View>
   )

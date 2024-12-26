@@ -33,7 +33,7 @@ export default function Index()
       )
     }
 
-    fetch(`http://${Config.IP_ADDRESS}:8080/register`, requestOptions)
+    fetch(`http://192.168.1.6:8080/register`, requestOptions)
       .then((response) => response.text())
       .then((result) => afterResponse(result))
       .catch((error) => console.error(error))

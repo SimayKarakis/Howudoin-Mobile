@@ -55,7 +55,7 @@ export default function Incoming()
         }
 
         const response = await fetch(
-          `http://172.28.96.1:8080/friends/accept`,
+          `http://192.168.1.6:8080/friends/accept`,
           {
             method: "POST",
             headers: {

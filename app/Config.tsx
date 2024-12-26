@@ -1,5 +1,5 @@
 const Config = {
-    IP_ADDRESS: "172.28.96.1", // Replace with your friend's IP address as needed
+    IP_ADDRESS: "192.168.1.6", // Replace with your IP address as needed
   };
   
 export default Config;

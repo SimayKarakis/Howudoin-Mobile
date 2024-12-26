@@ -9,22 +9,30 @@ export default function OneChat() {
 
   const {userName = 'Unknown User'} = useLocalSearchParams();
   //console.log(userName);
-  const [messages, setMessagesList] = useState<{ [key: string]: string }>({});
+  const [messages, setMessagesList] = useState<{ sender: string, messageContent: string }[]>([]);
   const [newMessage, setNewMessages] = useState("");
 
   // GETTING CONVERSATION HISTORY
+  
   const fetchMessages = async (token: string) => {
     try {
-      const response = await fetch(`http://172.28.96.1:8080/messages?s=${userName}`, {
+      //console.log(userName);
+      const name = Array.isArray(userName) ? userName.join(" ") : userName;
+      const encodedUserName = encodeURIComponent(name);
+
+      const response = await fetch(`http://192.168.1.6:8080/messages?requestNameLastname=${encodedUserName}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        //body: JSON.stringify({ s: userName }), ///////////////!!!!!!!!
       });
 
       if (response.ok) {
+
+        setNewMessages("");
+        //fetchMessages(token); // Refresh messages
+
         const data = await response.json();
         setMessagesList(data);
       } else {
@@ -36,12 +44,14 @@ export default function OneChat() {
     }
   };
 
+
+
   useEffect(() => {
     const getTokenAndFetchMessages = async () => {
       try {
         const token = await AsyncStorage.getItem("@auth_token");
         if (token) {
-          fetchMessages(token);
+          await fetchMessages(token);
         } else {
           Alert.alert("Error", "Token not found. Please log in.");
           router.push("./login");
@@ -65,7 +75,7 @@ export default function OneChat() {
         return;
       }
 
-      const response = await fetch(`http://172.28.96.1:8080/messages/send`, {
+      const response = await fetch(`http://192.168.1.6:8080/messages/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,8 +89,10 @@ export default function OneChat() {
     });
 
       if (response.ok) {
+
         setNewMessages("");
-        fetchMessages(token); // Refresh messages
+        await fetchMessages(token); // Refresh messages
+        
       } else {
         throw new Error("Failed to send message");
       }
@@ -91,8 +103,8 @@ export default function OneChat() {
   };
 
   const colors = {
-    user1: "#FF5733", // Color for the first user
-    user2: "#3498DB", // Color for the second user
+    user1: "#D14E43",
+    user2: "#1D3557",
   };
 
   return(
@@ -104,19 +116,27 @@ export default function OneChat() {
       
       <ScrollView contentContainerStyle={appStyle.scrollContent}>
 
-        <View style={appStyle.messageItem}>
-          <Text style={[appStyle.messengerName,{color:colors.user1}]}>Simay Karakış: </Text>
-          <Text style={appStyle.messageContent}>Hellooooo!</Text>
-        </View>
 
-      {Object.entries(messages).map(([messenger, content], index) => (
-            <View key={index} style={appStyle.messageItem}>
-              <Text style={[appStyle.messengerName,
-              {color: messenger === userName ? colors.user1 : colors.user2},
-              ]}>{messenger}: </Text>
-              <Text style={appStyle.messageContent}>{content}</Text>
-            </View>
-          ))}
+        {messages.map((message, index) => (
+          <View key={index} style={[appStyle.messageItem,
+              { 
+                alignSelf: message.sender === userName ? 'flex-start' : 'flex-end' ,
+                //marginLeft: message.sender === userName ? 10 : 0,
+                //marginRight: message.sender === userName ? 0 : 10,
+              }
+            ]}
+          >
+            <Text
+              style={[appStyle.messengerName,
+                { color: message.sender === userName ? colors.user1 : colors.user2 }
+              ]}
+            >{message.sender}:
+            </Text>
+            <Text style={appStyle.messageContent}>
+              {message.messageContent}
+            </Text>
+          </View>
+        ))}
       </ScrollView>
 
       <View style={appStyle.footer}>
@@ -220,6 +240,7 @@ const appStyle = StyleSheet.create({
       alignItems: 'center',
       borderBottomWidth: 1,
       borderBottomColor: "#E96A70",
+      marginBottom: 10
     },
 
     leftText: {
@@ -234,11 +255,10 @@ const appStyle = StyleSheet.create({
 
     messageItem: {
       flexDirection: "row",
-      justifyContent: "flex-start",
       marginBottom: 10,
-      borderBottomWidth: 1,
       borderBottomColor: "#E96A70",
       paddingBottom: 5,
+      maxWidth: '100%',
     },
 
     messengerName: {
@@ -250,7 +270,8 @@ const appStyle = StyleSheet.create({
 
     messageContent: {
       fontSize:16,
-      color: "#457B9D",
+      color: "#000000",
+      textAlign: "left",
     },
 
     footer: {

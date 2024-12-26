@@ -30,7 +30,7 @@ export default function Login()
       ),
     }
 
-    fetch(`http://172.28.96.1:8080/login`, requestOption)
+    fetch(`http://192.168.1.6:8080/login`, requestOption)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -82,7 +82,6 @@ export default function Login()
 
       <Text style={appStyle.texts}>Don't you have an account?{" "}
           <Link href="./" style={appStyle.links}>Register from here.</Link>
-          <Link href= "./tabs/chats" style = {appStyle.links}>Chats</Link>
       </Text>
     </View>
   )
